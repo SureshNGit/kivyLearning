@@ -10,6 +10,7 @@ Builder.load_file("design.kv")
 
 class LoginScreen(Screen):
     def signup(self):
+        self.manager.transition.direction="left"
         self.manager.current = "sign_up_screen"
 
     def login(self, uname, pword):
@@ -35,8 +36,18 @@ class LoginScreen(Screen):
 
 
 class SignUpScreen(Screen):
+    def show_login(self):
+        self.ids.username.text=""
+        self.ids.password.text=""
+        self.manager.transition.direction="right"
+        self.manager.current="login_screen"
+
+
     def add_user(self, uname, pword):
         print(uname, pword)
+        if uname=="" or pword=="":
+            self.ids.umessage.text="blank username or password"
+            return
         if not os.path.exists('users.json'):
             print("Users file not exists. Creating a new file....")
             with open('users.json', 'w') as file:
@@ -48,6 +59,9 @@ class SignUpScreen(Screen):
             print("Users file exists. Adding new user....")
             with open('users.json') as file:
                 users = json.load(file)
+            if uname in users:
+                self.ids.umessage.text="Username already exists!!!"
+                return
             with open('users.json', 'w') as file:
                 users[uname] = {"username": uname, "password": pword,
                                 "created_at": datetime.now().strftime("%Y-%m-%d %H-%M-%S")}

@@ -27,6 +27,9 @@
 <SignUpScreen>:
     GridLayout:
         cols: 1
+        Button:
+            text: "Already have account? Login"
+            on_press: root.show_login()
         Label:
             text: "User Registration"
         TextInput:
@@ -38,6 +41,9 @@
         Button:
             text: "Add"
             on_press: root.add_user(root.ids.username.text,root.ids.password.text)
+        Label:
+            id: umessage
+            text: ""
 <SignUpSccess>:
     GridLayout:
         cols:1
